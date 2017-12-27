@@ -12,7 +12,7 @@ let logOptions = {
     day: "numeric", hour: "2-digit", minute: "2-digit"
 };
 
-let yearList = ['2017', '2016', '2015'];
+let yearList = ['2018', '2017'];
 
 app.use(bodyParser());
 app.use(express.static("admin"));

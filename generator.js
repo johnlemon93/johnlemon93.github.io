@@ -2,6 +2,10 @@ var fs = require('fs');
 var path = require('path');
 var marked = require('./js/marked.js');
 
+var baseUrl = 'https://johnlemon93.github.io/';
+var basePostUrl = baseUrl + 'posts/';
+var baseTagUrl = baseUrl + 'tags/';
+
 function getDirectories (srcpath) {
   return fs.readdirSync(srcpath)
     .filter(file => fs.statSync(path.join(srcpath, file)).isDirectory())
@@ -68,7 +72,7 @@ fs.readdir(__dirname + '/posts/', function(err, files) {
 			  	htmlContent = templateHtml.replace('{%content%}', postContent);
 			  	htmlContent = htmlContent.replace('{%title%}', title);
 			  	htmlContent = htmlContent.replace('{%meta%}', metaData);
-			  	htmlContent = htmlContent.replace('{%posturl%}', 'http://huytd.github.io/posts/' + f.replace('.md', '.html'));
+			  	htmlContent = htmlContent.replace('{%posturl%}', basePostUrl + f.replace('.md', '.html'));
 			  	htmlContent = htmlContent.replace('{%postslug%}', f.replace('.md', ''));
 
 			  	fs.writeFile(htmlOutput, htmlContent, function (err) {
@@ -100,7 +104,7 @@ function generateTags(post) {
     html = tags.reduce((str, tag) => {
       let t = tag.trim();
       if (t) {
-        str += "<a class='topic-tag' href='https://huytd.github.io/tags/" + t + ".html'>" + t + "</a>";
+        str += "<a class='topic-tag' href='" + baseTagUrl + t + ".html'>" + t + "</a>";
       }
       return str;
     }, "<div class='other-tags'><b>Tags:</b> ") + "</div>";
@@ -147,7 +151,7 @@ function generateForSubFolder(currentSubFolder) {
             htmlContent = templateHtml.replace('{%content%}', postContent);
             htmlContent = htmlContent.replace('{%title%}', title);
             htmlContent = htmlContent.replace('{%meta%}', metaData);
-            htmlContent = htmlContent.replace('{%posturl%}', 'http://huytd.github.io/posts/' + f.replace('.md', '.html'));
+            htmlContent = htmlContent.replace('{%posturl%}', basePostUrl + f.replace('.md', '.html'));
             htmlContent = htmlContent.replace('{%postslug%}', f.replace('.md', ''));
 
             htmlContent = htmlContent.replace(/\.\.\//g, '../../');
@@ -188,9 +192,9 @@ for (var y = 0; y < publishYears.length; y++) {
 }
 
 htmlContent = indexTemplateHtml.replace('{%content%}', marked(postContent));
-htmlContent = htmlContent.replace('{%title%}', 'Nơi tổng hợp những ghi chép linh tinh');
+htmlContent = htmlContent.replace('{%title%}', 'To be determined');
 htmlContent = htmlContent.replace('{%meta%}', '');
-htmlContent = htmlContent.replace('{%posturl%}', 'http://huytd.github.io');
+htmlContent = htmlContent.replace('{%posturl%}', baseUrl);
 
 fs.writeFile(htmlOutput, htmlContent, function (err) {
   if (err)

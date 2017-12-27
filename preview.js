@@ -51,7 +51,7 @@ var genPreview = function(f, res) {
         htmlContent = htmlContent.replace('../', '');
         htmlContent = htmlContent.replace('{%title%}', title);
         htmlContent = htmlContent.replace('{%meta%}', metaData);
-        htmlContent = htmlContent.replace('{%posturl%}', 'http://huytd.github.io/posts/' + f.replace('.md', '.html'));
+        htmlContent = htmlContent.replace('{%posturl%}', 'https://johnlemon93.github.io/posts/' + f.replace('.md', '.html'));
 
         //res.writeHead('Content-Type', 'text/html');
         res.write(htmlContent);
