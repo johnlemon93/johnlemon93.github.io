@@ -1,0 +1,66 @@
+<h1 id="i-v-i">i++ và ++i</h1>
+<p><div class='published'><b>Published:</b> 2018-06-22 20:20:20</div></p>
+
+<p>Hôm rồi ngồi tám với ae trong team, cùng hồi tưởng về buổi interview với sếp lúc apply vào công ty. Topic chém gió là &quot;câu hỏi mà cả mình lẫn lão sếp đều không trả lời được&quot;. </p>
+<p>Mình nhớ hồi đó có một bài test code về vòng lặp, cái <code>for</code> nào mình cũng xài <code>++i</code>. Sếp thắc mắc 2 3 lần sao không dùng <code>i++</code> nhưng mình cứ vòng vo là &quot;it&#39;s faster but I forgot the reason&quot;. May sao lão sếp hình như cũng chả biết câu trả lời nên tự ái mà cho mình pass <i class="em em-joy"></i>. Cơ mà mãi đến lúc ngồi kể lại cho ae trong team nghe mà mình cũng chưa nhớ ra cái nguyên nhân đó, nên tối về hỏi lại gugo-sama ngay và viết bài này.</p>
+<h2 id="-i-m-kh-c-bi-t">Điểm khác biệt</h2>
+<p>Khác biệt cơ bản này áp dụng cho hầu hết các ngôn ngữ và compiler hiện nay.</p>
+<pre><code class="lang-C++">int a=0, b=0;
+a++; // a = 1
+++b; // b = 1
+b = ++a; // b = a = 2
+a = b++; // a = 2, b = 3
+</code></pre>
+<p><code>++i</code> tăng giá trị của <strong>i</strong> lên 1 và trả về giá trị mới đó.<br> 
+<code>i++</code> cũng tương tự nhưng giá trị trả về là giá trị ban đầu của <strong>i</strong> trước khi được tăng lên 1.</p>
+<p>Một điểm đáng lưu ý ở đây, không nên nhầm lẫn là <code>i++</code> sẽ trả về giá trị <strong>i</strong> cho phép gán trước khi nó được tăng lên. Phép gán luôn thực hiện sau cùng, nên điều đó là không thể nhé.</p>
+<p>Về bản chất chương trình sẽ tạo ra một biến tạm (temp) để lưu giá trị ban đầu của <strong>i</strong> và trả về giá trị đó cho phép gán sau khi phép toán <code>i++</code> thực hiện xong.</p>
+<pre><code class="lang-C++">int MePlusPlus(int me) 
+{
+    int temp = me;
+    me = me + 1;
+    return temp;
+}
+</code></pre>
+<h2 id="performance">Performance</h2>
+<p>Tuy phải tốn công tạo một biến temp cho <code>i++</code> nhưng thực tế sự khác biệt về performance là không lớn. Hầu như tất cả compiler hiện đại sẽ optimize phép toán đó. Bằng chứng là trong ví dụ <a href="https://stackoverflow.com/questions/24886/is-there-a-performance-difference-between-i-and-i-in-c/24887#24887">này</a> trên stackoverflow, <strong>gcc</strong> cho kết quả biên dịch là như nhau cho hai file code chứa vòng lặp xài <code>++i</code> và <code>i++</code>.</p>
+<p>Nhưng riêng với <code>C++</code>, sự chênh lệch có thể là đáng kể trong một số trường hợp. Cụ thể là với user-defined type, tức là <code>class</code> bạn tạo ra, vì <code>operator++()</code> là một hàm và compiler không biết làm cách nào để optimize việc tạo ra cái temp object đó cả. Sao nó biết được bạn define cái gì và sẽ bự cỡ nào trong class đó.</p>
+<h2 id="v-y-n-n-x-i-c-i-n-o-trong-v-ng-for-">Vậy nên xài cái nào trong vòng <code>for</code>?</h2>
+<p>Riêng đối với mình thì <code>++i</code> đã trở thành một convention bất thành văn rồi. Dù chiến project nào mình cũng xài nó mà chả quan tâm performance gì cho mệt óc. Rất nhiều guru trong giới coder đều đưa ra lời khuyên:</p>
+<blockquote>
+<p>In any case, follow the guideline &quot;prefer ++i over i++&quot; and you won&#39;t go wrong </p>
+</blockquote>
+<p>(from many Khuyết Danh)</p>
+<h2 id="m-t-ch-t-v-side-effect-v-undefined-behavior">Một chút về side effect và undefined behavior</h2>
+<h3 id="v-d-1-">Ví dụ 1:</h3>
+<pre><code class="lang-C++">int add(int x, int y)
+{
+    return x + y;
+}
+
+int main()
+{
+    int x = 5;
+    // tùy thuộc vào thứ tự evaluate các param của conmpiler mà phép cộng này có thể là 5+6 hoặc 6+6  
+    int value = add(x, ++x); 
+
+    std::cout &lt;&lt; value; // 11 or 12?
+    return 0;
+}
+</code></pre>
+<h3 id="v-d-2-">Ví dụ 2:</h3>
+<pre><code class="lang-C++">int main()
+{
+    int arr[3] = {0, 1, 2};
+    int i = 0;
+
+    arr[i++] = ++i;
+    int x = ++i + ++i;
+
+    std::cout &lt;&lt; arr[i] &lt;&lt; endl;
+    std::cout &lt;&lt; x; 
+    return 0;
+}
+</code></pre>
+<p>Mình sẽ không giải thích &quot;Side effect hay UB là gì?&quot; ở đây. Cái này cũng khá thú vị nên mình sẽ viết riêng một bài về nó. Nhưng qua hai ví dụ trên chắc bạn cũng thấy được sự nguy hiểm của chúng, nếu phép gán thứ nhất ở ví dụ 2 mà trong vòng lặp nữa thì <i class="em em-fearful"></i>.</p>
+<p>Hẹn gặp các bạn ở những bài viết sau!</p>
