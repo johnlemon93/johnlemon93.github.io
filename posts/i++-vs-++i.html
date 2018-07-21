@@ -41,7 +41,8 @@ a = b++; // a = 2, b = 3
 int main()
 {
     int x = 5;
-    // tùy thuộc vào thứ tự evaluate các param của conmpiler mà phép cộng này có thể là 5+6 hoặc 6+6  
+    // tùy thuộc vào thứ tự evaluate các param của conmpiler 
+    // mà phép cộng này có thể là 5+6 hoặc 6+6  
     int value = add(x, ++x); 
 
     std::cout &lt;&lt; value; // 11 or 12?
