@@ -15,7 +15,7 @@ a = b++; // a = 2, b = 3
 <code>i++</code> cũng tương tự nhưng giá trị trả về là giá trị ban đầu của <strong>i</strong> trước khi được tăng lên 1.</p>
 <p>Một điểm đáng lưu ý ở đây, không nên nhầm lẫn là <code>i++</code> sẽ trả về giá trị <strong>i</strong> cho phép gán trước khi nó được tăng lên. Phép gán luôn thực hiện sau cùng, nên điều đó là không thể nhé.</p>
 <p>Về bản chất chương trình sẽ tạo ra một biến tạm (temp) để lưu giá trị ban đầu của <strong>i</strong> và trả về giá trị đó cho phép gán sau khi phép toán <code>i++</code> thực hiện xong.</p>
-<pre><code class="lang-C++">int MePlusPlus(int me) 
+<pre><code class="lang-C++">int MePlusPlus(int&amp; me) 
 {
     int temp = me;
     me = me + 1;
@@ -41,8 +41,7 @@ a = b++; // a = 2, b = 3
 int main()
 {
     int x = 5;
-    // tùy thuộc vào thứ tự evaluate các param của conmpiler
-    // mà phép cộng này có thể là 5+6 hoặc 6+6
+    // tùy thuộc vào thứ tự evaluate các param của conmpiler mà phép cộng này có thể là 5+6 hoặc 6+6  
     int value = add(x, ++x); 
 
     std::cout &lt;&lt; value; // 11 or 12?
