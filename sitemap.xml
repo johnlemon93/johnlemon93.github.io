@@ -26,4 +26,12 @@
   <loc>https://blogchanhday.com/p/nhat-ky-anh-bo-cau-dua-thu-va-https/</loc>
   <priority>0.80</priority>
 </url>
+<url>
+  <loc>https://blogchanhday.com/p/javascript-tong-quan-ve-engine-runtime-call-stack-va-event-loop/</loc>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://blogchanhday.com/p/git-cherry-pick/</loc>
+  <priority>0.80</priority>
+</url>
 </urlset>
